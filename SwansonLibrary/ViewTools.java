@@ -20,11 +20,12 @@ public class ViewTools {
     public static double FULLCIRCLE = Math.PI*2;
 
     public static final class RadianAngles{
-        private static double radians[] = new double[]{0,.5*Math.PI,Math.PI,1.5*Math.PI};
-        public static double RIGHT=radians[0];
-        public static double TOP=radians[1];
-        public static double LEFT=radians[2];
-        public static double BOTTOM=radians[3];
+
+        public static double RIGHT=0;
+        public static double TOP=1.5*Math.PI;
+        public static double LEFT=Math.PI;
+        public static double BOTTOM=Math.PI*.5;
+
     }
 
 
@@ -70,13 +71,6 @@ public class ViewTools {
         int dy = y - y2;
         return dx * dx + dy * dy;
     }
-
-
-
-    static public Point offset(Point originalPoint, Point offset){
-        return new Point(originalPoint.x+offset.x,originalPoint.y+offset.y);
-    }
-
 
 
     static public class Line{
@@ -159,11 +153,11 @@ public class ViewTools {
     static public Point vectortoPoint(double vectorinRadians, double length, Point start, Rect bounds){
         Point point = vectorToPoint(vectorinRadians, length, start);
 
-        if(!contains(point,bounds)){
+        if(!containsInner(point, bounds)){
             if(point.x<=bounds.left) point.x=bounds.left+1;
             if(point.x>=bounds.right) point.x=bounds.right-1;
-            if(point.y<=bounds.bottom) point.y=bounds.bottom+1;
-            if(point.y<=bounds.top) point.y=bounds.top-1;
+            if(point.y<=bounds.top) point.y=bounds.top+1;
+            if(point.y<=bounds.bottom) point.y=bounds.bottom-1;
         }
 
 
@@ -254,22 +248,14 @@ public class ViewTools {
         return radian;
     }
 
-
-
-    public static Rect getWindowBounds(Context context){
-        Point size = getWindowSize(context);
-        return new Rect(0,size.y,size.x,0);
-    }
-
-
     public static Rect marginRectPercent(Rect rect, float percent){
         if(percent<=0||percent>1)return new Rect(0,0,0,0);
-        int height = rect.height();
+
         Rect smallerRect=new Rect(rect);
         float ydelta = (smallerRect.height()*percent)/2;
         float xdelta = (smallerRect.width()*percent)/2;
         smallerRect.inset((int)ydelta,(int)xdelta);
-        smallerRect.width();
+
 
         return smallerRect;
     }
@@ -284,30 +270,34 @@ public class ViewTools {
         return size;
     }
 
-    public static boolean contains(Point point, Rect bounds){
-        return contains(point.x,point.y,bounds);
+    public static Rect getWindowBounds(Context context){
+        Point size = getWindowSize(context);
+        return new Rect(0,0,size.x,size.y);
     }
 
-    public static boolean contains(float x, float y, Rect bounds) {
-        if(bounds.left<x&&x<bounds.right && bounds.bottom<y && y<bounds.top) return true;
-        else return false;
+    public static boolean containsInner(Point point, Rect bounds){
+        return containsInner(point.x, point.y, bounds);
+    }
+
+    public static boolean containsInner(float x, float y, Rect bounds) {
+        return bounds.left < x && x < bounds.right && bounds.bottom > y && y > bounds.top;
     }
 
     public static Point getRandomPoint(Rect Bounds){
         Random randomGen = new Random();
         Point thisPoint = new Point();
-        thisPoint.x = randomGen.nextInt(Bounds.right-Bounds.left)+Bounds.left;
-        thisPoint.y = randomGen.nextInt(Bounds.top-Bounds.bottom)+Bounds.bottom;
+        thisPoint.x = randomGen.nextInt(Bounds.width())+Bounds.left;
+        thisPoint.y = randomGen.nextInt(Bounds.height())+Bounds.top;
         return thisPoint;
 
     }
 
     public static Line[] rectToLines(Rect rect){
 
-        Point northWest = new Point(rect.left,rect.top);
-        Point northEast = new Point(rect.right,rect.top);
-        Point southEast = new Point(rect.right,rect.bottom);
-        Point southWest = new Point(rect.left,rect.bottom);
+        Point northWest = new Point(rect.left,rect.bottom);
+        Point northEast = new Point(rect.right,rect.bottom);
+        Point southEast = new Point(rect.right,rect.top);
+        Point southWest = new Point(rect.left,rect.top);
 
         return new Line[]{
                 new Line(northWest,northEast),

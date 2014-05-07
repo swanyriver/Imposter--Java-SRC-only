@@ -173,7 +173,6 @@ public class PointGenerator {
 
         private RadianRange getWallRadianRange(int walledge, double wallRadian, int point, boolean y) {
 
-            ArrayList<RadianRange> rangesOut= new ArrayList<RadianRange>();
 
             int opposite = point-walledge;
             Double adjecent = Math.sqrt((mMinLength*mMinLength-opposite*opposite));
@@ -206,17 +205,7 @@ public class PointGenerator {
 
         }
 
-        //fordebug///
-        public ArrayList<Point> getAllPoints(){
-            ArrayList<Point> generatedPoints = new ArrayList<Point>();
 
-            for(float v = 0f;v<1;v+=.005){
-                double unmappedRad=mAvailableRadians*v;
-                double mappedRad = getMappedRad(unmappedRad);
-                generatedPoints.add(ViewTools.vectorToPoint(mappedRad, mMinLength, mCurrentPoint));
-            }
-            return generatedPoints;
-        }
 
         public Point getPoint(){
 
@@ -236,7 +225,7 @@ public class PointGenerator {
             if(generatedPoint.y==mBounds.bottom)generatedPoint.y+=3;
 
             int whilecount=0;
-            while (!ViewTools.contains(generatedPoint,mBounds)){
+            while (!ViewTools.containsInner(generatedPoint, mBounds)){
                 approvedLength-=approvedLength*.005;
                 generatedPoint=ViewTools.vectorToPoint(approvedRad, approvedLength, mCurrentPoint);
                 whilecount++;
@@ -328,6 +317,18 @@ public class PointGenerator {
                 Log.d("PATH", "zero length");
             }
             return pointLength;
+        }
+
+        //fordebug///
+        public ArrayList<Point> getAllPoints(){
+            ArrayList<Point> generatedPoints = new ArrayList<Point>();
+
+            for(float v = 0f;v<1;v+=.005){
+                double unmappedRad=mAvailableRadians*v;
+                double mappedRad = getMappedRad(unmappedRad);
+                generatedPoints.add(ViewTools.vectorToPoint(mappedRad, mMinLength, mCurrentPoint));
+            }
+            return generatedPoints;
         }
 
         public void Visualize(Path path, TextView readout){
