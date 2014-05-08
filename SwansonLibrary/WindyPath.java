@@ -16,17 +16,17 @@ public class WindyPath extends Path{
     /////////////////////
 
     ///DEFAULT CONTROL VARIABLES
-    private int mLineNumberDEFAULT=100;
-    private int mMarginDEFAULT=30;
-    private float mMinLengthPercentageDEFAULT=.17F;
+    protected int mLineNumberDEFAULT=100;
+    protected int mMarginDEFAULT=30;
+    protected float mMinLengthPercentageDEFAULT=.17F;
 
     ///FIXED CONTROL VARIABLES
     static public float MINIMUM_ANGLE_DEFAULT = .23f;  //as a percent of 180  .25 = 45degrees = 90 degrees total
 
 
     ///DATA STRUCTURE
-    private Point mLinePoints[];
-    private PointGenerator mPointGenerator;
+    protected Point mLinePoints[];
+    protected PointGenerator mPointGenerator;
     private Rect mBounds;
 
     /////UTILITY
@@ -39,35 +39,43 @@ public class WindyPath extends Path{
     public WindyPath(int Width, int Height) {
 
         inflateData(mLineNumberDEFAULT,mMarginDEFAULT,Width,Height,mMinLengthPercentageDEFAULT,MINIMUM_ANGLE_DEFAULT);
+        generate();
     }
     public WindyPath(Point size){
         inflateData(mLineNumberDEFAULT,mMarginDEFAULT,size.x,size.y,mMinLengthPercentageDEFAULT,MINIMUM_ANGLE_DEFAULT);
+        generate();
     }
     public WindyPath(int Width, int Height, int LineNumber, float MinLengthPercentage, int Margin, float minAngle) {
 
         inflateData(LineNumber,Margin,Width,Height,MinLengthPercentage,minAngle);
+        generate();
 
     }
     public WindyPath(int Width, int Height,int LineNumber ,float MinLengthPercentage, float minAngle,Rect bounds) {
         inflateData(LineNumber,MinLengthPercentage,minAngle,bounds);
+        generate();
 
     }
     public WindyPath(Rect bounds, int LineNumber) {
         inflateData(LineNumber,mMinLengthPercentageDEFAULT,MINIMUM_ANGLE_DEFAULT,bounds);
+        generate();
 
     }
 
+    protected WindyPath() {
+    }
 
 
-    private void inflateData(int LineNumber, int Margin, int Width, int Height, float MinLengthPercentage, float MinAngle){
-        Rect bounds = new Rect();
+    protected void inflateData(int LineNumber, int Margin, int Width, int Height, float MinLengthPercentage, float MinAngle){
+        Rect bounds = new Rect(0,0,Width,Height);
+
 
         bounds.inset(Margin,Margin);
 
-        inflateData(LineNumber,MinLengthPercentage, MinAngle,bounds);
+        inflateData(LineNumber, MinLengthPercentage, MinAngle, bounds);
     }
 
-    private void inflateData(int LineNumber,float MinLengthPercentage, float MinAngle, Rect bounds) {
+    protected void inflateData(int LineNumber,float MinLengthPercentage, float MinAngle, Rect bounds) {
 
         mBounds = bounds;
 
@@ -80,7 +88,7 @@ public class WindyPath extends Path{
 
         mPointGenerator = new PointGenerator(MaxLength,MinLength,bounds,MinAngle);
 
-        generate();
+
 
     }
 
@@ -99,11 +107,9 @@ public class WindyPath extends Path{
 
         makeCurves();
 
-
-
     }
 
-    private void makeCurves() {
+    protected void makeCurves() {
         Point midpoints[] = new Point[mLineNumber];
         for(int x=0;x<mLineNumber;x++)midpoints[x]=getMidPoint(mLinePoints[x], mLinePoints[x+1]);
 

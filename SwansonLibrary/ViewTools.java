@@ -150,13 +150,13 @@ public class ViewTools {
         return thisIntersection;
     }
 
-    static public Point vectortoPoint(double vectorinRadians, double length, Point start, Rect bounds){
+    static public Point vectorToPoint(double vectorinRadians, double length, Point start, Rect bounds){
         Point point = vectorToPoint(vectorinRadians, length, start);
 
         if(!containsInner(point, bounds)){
             if(point.x<=bounds.left) point.x=bounds.left+1;
             if(point.x>=bounds.right) point.x=bounds.right-1;
-            if(point.y<=bounds.top) point.y=bounds.top+1;
+            if(point.y>=bounds.top) point.y=bounds.top+1;
             if(point.y<=bounds.bottom) point.y=bounds.bottom-1;
         }
 
@@ -248,7 +248,7 @@ public class ViewTools {
         return radian;
     }
 
-    public static Rect marginRectPercent(Rect rect, float percent){
+    /*public static Rect marginRectPercent(Rect rect, float percent){
         if(percent<=0||percent>1)return new Rect(0,0,0,0);
 
         Rect smallerRect=new Rect(rect);
@@ -258,7 +258,7 @@ public class ViewTools {
 
 
         return smallerRect;
-    }
+    }*/
 
     public static Point getWindowSize(Context context){
 

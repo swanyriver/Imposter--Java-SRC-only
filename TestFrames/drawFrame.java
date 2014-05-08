@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -38,7 +39,7 @@ public class drawFrame extends FrameLayout {
     private Context mContext;
 
     //private int LineNumber = 8;
-    private int refreshrate=600*4;
+    private int refreshrate=600/600;
 
     private DecimalFormat myFormat = new DecimalFormat("#");
 
@@ -90,11 +91,11 @@ public class drawFrame extends FrameLayout {
         Rect bounds=ViewTools.getWindowBounds(context);
 
 
-        //ViewTools.marginRectPercent(bounds, .08f);
+       bounds.inset(100,100);
 
 
-
-        myWindyPath = new WindyPath(bounds,40);
+       // myWindyPath = new WindyPath(bounds,40);
+        myWindyPath = new testWindy(bounds,10);
 
 
         makeLinesAndCurves();
@@ -142,8 +143,8 @@ public class drawFrame extends FrameLayout {
         }
 
 
-        //TEMPORARY, REMOVE ANGLE LABELS
-        /*removeAllViews();
+        /*//TEMPORARY, REMOVE ANGLE LABELS
+        removeAllViews();
         measureAngeles(LinePoints, LineNumber);
         addView(myButton);*/
 
@@ -166,7 +167,7 @@ public class drawFrame extends FrameLayout {
             logstring+=",";
 
         }
-        //Log.d("PATH",logstring);
+        Log.d("PATH", logstring);
 
     }
 
@@ -176,7 +177,7 @@ public class drawFrame extends FrameLayout {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        canvas.drawPath(mLinePath,mLinePaint);
+        //canvas.drawPath(mLinePath,mLinePaint);
         canvas.drawPath(myWindyPath,mCurvePaint);
 
 

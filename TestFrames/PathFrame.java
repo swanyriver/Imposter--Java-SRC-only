@@ -48,7 +48,7 @@ public class PathFrame extends FrameLayout{
         ViewTools.rectToLines(bounds,mLinePath);
         //bounds.inset(60,60);
         //ViewTools.rectToLines(bounds,mLinePath);
-        ViewTools.marginRectPercent(bounds,.30f);
+
         ViewTools.rectToLines(bounds,mCurvePath);
 
         mCurvePath.moveTo(bounds.centerX(),bounds.centerY());

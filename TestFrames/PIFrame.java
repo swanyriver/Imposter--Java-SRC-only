@@ -122,7 +122,23 @@ public class PIFrame extends FrameLayout {
         mReadout=textView;
         mContext=context;
 
-        inflateData();
+        mPreviousRadian=-1.0;
+
+
+
+        Bounds = ViewTools.getWindowBounds(context);
+        Bounds.inset(mMargin,mMargin);
+
+        mMaxLength = (int) ViewTools.getHypotenuse(Bounds.width(),Bounds.height());
+        mMinLength = (int) (mMaxLength*mMinLengthPercentage);
+
+        BorderLines=ViewTools.rectToLines(Bounds);
+
+        mCurrentPoint = ViewTools.vectorToPoint(Math.PI / 2, mMinLength * 1.5, mOrigin);
+
+
+
+
         mPointGenerator = new PointGenerator(mMaxLength,mMinLength,Bounds,WindyPath.MINIMUM_ANGLE_DEFAULT);
 
 
@@ -278,7 +294,7 @@ public class PIFrame extends FrameLayout {
 
                 //Log.d("PATH", "origon move touch");
 
-                boolean inside = ViewTools.contains(x, y, Bounds);
+                boolean inside = ViewTools.containsInner(x, y, Bounds);
                 boolean lengthAllowed = ViewTools.lengthLessThanDistance(mCurrentPoint,new Point((int)x,(int)y), mMinLength);
 
                 if(inside && lengthAllowed){
@@ -316,7 +332,7 @@ public class PIFrame extends FrameLayout {
                 }
                 Point touchPoint = Offset.get((int)x,(int)y);
 
-                boolean inside = ViewTools.contains(touchPoint.x, touchPoint.y, Bounds);
+                boolean inside = ViewTools.containsInner(touchPoint.x, touchPoint.y, Bounds);
                 boolean lengthAllowed = ViewTools.lengthLessThanDistance(mOrigin,touchPoint, mMinLength);
 
                 if(inside && lengthAllowed){
@@ -430,32 +446,6 @@ public class PIFrame extends FrameLayout {
 
     }
 
-    private void inflateData() {
-
-
-        mPreviousRadian=-1.0;
-
-        mMaxLength = (int) ViewTools.getHypotenuse(mWidth-(mMargin*2),mHeight-(mMargin*2));
-        mMinLength = (int) (mMaxLength*mMinLengthPercentage);
-
-
-        Bounds.right = mWidth-mMargin;
-        Bounds.left = 0+mMargin;
-        Bounds.top = mHeight-mMargin;
-        Bounds.bottom= 0+mMargin;
-
-        BorderLines= new ViewTools.Line[]{
-                new ViewTools.Line(Bounds.left,Bounds.top,Bounds.right,Bounds.top),
-                new ViewTools.Line(Bounds.right,Bounds.top,Bounds.right,Bounds.bottom),
-                new ViewTools.Line(Bounds.right,Bounds.bottom,Bounds.left,Bounds.bottom),
-                new ViewTools.Line(Bounds.left,Bounds.bottom,Bounds.left,Bounds.top),
-        };
-
-        mCurrentPoint = ViewTools.vectorToPoint(Math.PI / 2, mMinLength * 1.5, mOrigin);
-
-
-
-    }
 
 
 }

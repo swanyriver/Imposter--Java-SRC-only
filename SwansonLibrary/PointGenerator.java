@@ -198,13 +198,13 @@ public class PointGenerator {
             double approvedLength=getAppropriateLenth(approvedRad);
 
 
-            Point generatedPoint = ViewTools.vectorToPoint(approvedRad, approvedLength, mCurrentPoint);
+            Point generatedPoint = ViewTools.vectorToPoint(approvedRad, approvedLength, mCurrentPoint,mBounds);
 
             /*Log.d("PATH","generated point=" + generatedPoint.x + "/" + generatedPoint.y  + " from:" +
                     mCurrentPoint.x + "/" + mCurrentPoint.y);
             Log.d("PATH", "VECTOR:"+approvedRad + "  LENGHT:" + approvedLength);*/
 
-            if(generatedPoint.x==mBounds.left)generatedPoint.x=generatedPoint.x+3;
+            /*if(generatedPoint.x==mBounds.left)generatedPoint.x=generatedPoint.x+3;
             if(generatedPoint.x==mBounds.right)generatedPoint.x=generatedPoint.x-3;
             if(generatedPoint.y==mBounds.top)generatedPoint.y-=3;
             if(generatedPoint.y==mBounds.bottom)generatedPoint.y+=3;
@@ -220,7 +220,7 @@ public class PointGenerator {
 
                 }
 
-            }
+            }*/
 
 
             return generatedPoint;

@@ -116,7 +116,7 @@ public class ImposterMainActivity extends Activity {
         MasterLayout.addView(new TestFrames.drawFrame(this));
 
 
-        //MasterLayout.addView(new TestFrames.PIFrame(this,(TextView) findViewById(R.id.readout)));
+       // MasterLayout.addView(new TestFrames.PIFrame(this,(TextView) findViewById(R.id.readout)));
 
         //MasterLayout.addView(new DoublePiFrame(this));
 
