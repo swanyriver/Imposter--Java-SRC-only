@@ -62,10 +62,7 @@ public class WindyPath extends Path{
     private void inflateData(int LineNumber, int Margin, int Width, int Height, float MinLengthPercentage, float MinAngle){
         Rect bounds = new Rect();
 
-        bounds.right = Width-Margin;
-        bounds.left = 0+Margin;
-        bounds.top = Height-Margin;
-        bounds.bottom= 0+Margin;
+        bounds.inset(Margin,Margin);
 
         inflateData(LineNumber,MinLengthPercentage, MinAngle,bounds);
     }
@@ -76,7 +73,7 @@ public class WindyPath extends Path{
 
         mLineNumber=LineNumber;
 
-        int MaxLength = (int) ViewTools.getHypotenuse(bounds.right-bounds.left,bounds.top-bounds.bottom);
+        int MaxLength = (int) ViewTools.getHypotenuse(bounds.width(),bounds.height());
         int MinLength = (int) (MaxLength*MinLengthPercentage);
 
         if(MinAngle>MINIMUM_ANGLE_DEFAULT)MinAngle=MINIMUM_ANGLE_DEFAULT;
@@ -92,7 +89,7 @@ public class WindyPath extends Path{
 
         mLinePoints = new Point[mLineNumber+1];
 
-        mLinePoints[0]=getRandomPoint();
+        mLinePoints[0]=ViewTools.getRandomPoint(mBounds);
         mLinePoints[1]=mPointGenerator.makeMap(mLinePoints[0],mLinePoints[0]).getPoint();
         for(int x=2;x<mLineNumber+1;x++){
 
@@ -120,13 +117,7 @@ public class WindyPath extends Path{
 
     ////////////UTILITY FUCTIONS
 
-    private Point getRandomPoint(){
-        Point thisPoint = new Point();
-        thisPoint.x = randomGen.nextInt(mBounds.right-mBounds.left)+mBounds.left;
-        thisPoint.y = randomGen.nextInt(mBounds.top-mBounds.bottom)+mBounds.bottom;
-        return thisPoint;
 
-    }
 
     private Point getMidPoint(Point start, Point end){
         int dx = end.x - start.x;
@@ -136,6 +127,7 @@ public class WindyPath extends Path{
         int orginalLineMidY = start.y + Math.round(.5f * dy);
 
         return new Point(orginalLineMidX,orginalLineMidY);
+
     }
 
     ///FOR DEBUG

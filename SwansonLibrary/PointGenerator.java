@@ -40,10 +40,7 @@ public class PointGenerator {
     //private Point mLinePoints[];
     private int mMaxLength;
     private int mMinLength;
-    private int right;
-    private int bottom;
-    private int left;
-    private int top;
+
     private ViewTools.Line BorderLines[];
     private float mMinAngle;
 
@@ -53,29 +50,17 @@ public class PointGenerator {
         this.mMaxLength = mMaxLength;
         this.mMinLength = mMinLength;
         this.mMinAngle=minAngle;
-        this.right = bounds.right;
-        this.bottom = bounds.bottom;
-        this.left = bounds.left;
-        this.top = bounds.top;
+
 
         mBounds = bounds;
 
-        BorderLines = makeBorderlines(bounds);
+        BorderLines = ViewTools.rectToLines(bounds);
 
 
 
     }
 
-    private ViewTools.Line[] makeBorderlines(Rect bounds) {
-        ViewTools.Line borderlines[]= new ViewTools.Line[]{
-                new ViewTools.Line(bounds.left,bounds.top,bounds.right,bounds.top),
-                new ViewTools.Line(bounds.right,bounds.top,bounds.right,bounds.bottom),
-                new ViewTools.Line(bounds.right,bounds.bottom,bounds.left,bounds.bottom),
-                new ViewTools.Line(bounds.left,bounds.bottom,bounds.left,bounds.top),
-        };
 
-        return borderlines;
-    }
 
     public RadianExclusionMap makeMap(Point Origin, Point CurrentPoint){
         return new RadianExclusionMap(Origin,CurrentPoint);
@@ -107,19 +92,19 @@ public class PointGenerator {
 
             //detect proximity to walls, exclude them
 
-            if(mCurrentPoint.y-bottom<mMinLength){
+            if(mCurrentPoint.y-mBounds.top<mMinLength){
 
-                mExcludedRanges.add(getWallRadianRange(bottom, ViewTools.RadianAngles.BOTTOM, mCurrentPoint.y, true));
+                mExcludedRanges.add(getWallRadianRange(mBounds.top, ViewTools.RadianAngles.TOP, mCurrentPoint.y, true));
             }
 
-            if(top-mCurrentPoint.y<mMinLength){
-                mExcludedRanges.add(getWallRadianRange(top, ViewTools.RadianAngles.TOP,mCurrentPoint.y,true));
+            if(mBounds.bottom-mCurrentPoint.y<mMinLength){
+                mExcludedRanges.add(getWallRadianRange(mBounds.bottom, ViewTools.RadianAngles.BOTTOM,mCurrentPoint.y,true));
             }
-            if(mCurrentPoint.x-left<mMinLength){
-                mExcludedRanges.add(getWallRadianRange(left, ViewTools.RadianAngles.LEFT,mCurrentPoint.x,false));
+            if(mCurrentPoint.x-mBounds.left<mMinLength){
+                mExcludedRanges.add(getWallRadianRange(mBounds.left, ViewTools.RadianAngles.LEFT,mCurrentPoint.x,false));
             }
-            if(right-mCurrentPoint.x<mMinLength){
-                mExcludedRanges.add(getWallRadianRange(right, ViewTools.RadianAngles.RIGHT,mCurrentPoint.x,false));
+            if(mBounds.right-mCurrentPoint.x<mMinLength){
+                mExcludedRanges.add(getWallRadianRange(mBounds.right, ViewTools.RadianAngles.RIGHT,mCurrentPoint.x,false));
             }
 
             //sort and merge
@@ -364,40 +349,40 @@ public class PointGenerator {
             readout.setText(readout.getText()+"AVIL:" + twoDigit.format(mAvailableRadians)+
             "EX:"+ twoDigit.format(mTotalExludedRadians) + "  " + twoDigit.format(mTotalExludedRadians+mAvailableRadians));
 
-            if(mCurrentPoint.y-bottom<mMinLength){
+            if(mBounds.bottom-mCurrentPoint.y<mMinLength){
                 Point drawpoint  = ViewTools.vectorToPoint(
                         ViewTools.RadianAngles.BOTTOM,
-                        mCurrentPoint.y - bottom, mCurrentPoint);
+                        mBounds.bottom-mCurrentPoint.y, mCurrentPoint);
                 path.addCircle(drawpoint.x,drawpoint.y,10, Path.Direction.CCW);
 
                 //1.5 pi
 
             }
-            if(top-mCurrentPoint.y<mMinLength){
+            if(mCurrentPoint.y-mBounds.top<mMinLength){
 
                 Point drawpoint  = ViewTools.vectorToPoint(
                         ViewTools.RadianAngles.TOP,
-                        top - mCurrentPoint.y, mCurrentPoint);
+                        mCurrentPoint.y-mBounds.top, mCurrentPoint);
                 path.addCircle(drawpoint.x,drawpoint.y,10, Path.Direction.CCW);
 
                 //half pi
 
             }
-            if(mCurrentPoint.x-left<mMinLength){
+            if(mCurrentPoint.x-mBounds.left<mMinLength){
 
                 Point drawpoint  = ViewTools.vectorToPoint(
                         ViewTools.RadianAngles.LEFT,
-                        mCurrentPoint.x - left, mCurrentPoint);
+                        mCurrentPoint.x - mBounds.left, mCurrentPoint);
                 path.addCircle(drawpoint.x,drawpoint.y,10, Path.Direction.CCW);
 
                 //1pi
 
             }
-            if(right-mCurrentPoint.x<mMinLength){
+            if(mBounds.right-mCurrentPoint.x<mMinLength){
 
                 Point drawpoint  = ViewTools.vectorToPoint(
                         ViewTools.RadianAngles.RIGHT,
-                        right - mCurrentPoint.x, mCurrentPoint);
+                        mBounds.right - mCurrentPoint.x, mCurrentPoint);
                 path.addCircle(drawpoint.x,drawpoint.y,10, Path.Direction.CCW);
 
                 //0pi
