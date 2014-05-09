@@ -3,6 +3,7 @@ package SwansonLibrary;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.Point;
+import android.graphics.PointF;
 
 /**
  * Created by Brandon on 5/1/14.
@@ -38,11 +39,37 @@ public class PathPlus extends Path {
         return this;
     }
 
+    public PathPlus makeLine(PointF start, PointF end){
+        moveTo(start.x,start.y);
+        lineTo(end.x,end.y);
+        return this;
+    }
+
     public static PathPlus textLine(Point start, Point end){
         return textLine(new ViewTools.Line(start, end));
     }
     public static PathPlus textLine(ViewTools.Line line){
         return new PathPlus().makeLine(line);
+    }
+    public static PathPlus textLine(PointF start, PointF end){
+        return new PathPlus().makeLine(start,end);
+    }
+
+    public static void getDrawableSegment(Path segment, Path dstPath){
+        getDrawableSegment(segment,dstPath,.1f);
+    }
+
+    public static void getDrawableSegment(Path segment, Path dstPath, float granularity){
+        dstPath.rewind();
+        PathMeasure pathMeasure = new PathMeasure(segment,false);
+        float length = pathMeasure.getLength();
+        ViewTools.PathPosition pathPosition = ViewTools.getPathPosition(pathMeasure,0);
+        dstPath.moveTo(pathPosition.position.x,pathPosition.position.y);
+        for(float distance=0;distance<=length;distance+=granularity){
+            pathPosition=ViewTools.getPathPosition(pathMeasure,distance);
+            dstPath.lineTo(pathPosition.position.x,pathPosition.position.y);
+        }
+
     }
 
     /*public void Close(){

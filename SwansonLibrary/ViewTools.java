@@ -2,6 +2,7 @@ package SwansonLibrary;
 
 import android.content.Context;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -233,10 +234,12 @@ public class ViewTools {
 
     public static double getArcTan2Mapped(Point start, Point end){
 
-        /*Double radian = Math.atan2(end.y-start.y,end.x-start.x);
-        if(radian<0)radian+=FULLCIRCLE;
-        return radian;*/
+
         return getArcTan2Mapped(end.y-start.y,end.x-start.x);
+    }
+
+    public static double getArcTan2Mapped(float tan[]){
+        return getArcTan2Mapped(tan[1],tan[0]);
     }
 
     public static double getArcTan2Mapped(double y, double x){
@@ -248,17 +251,30 @@ public class ViewTools {
         return radian;
     }
 
-    /*public static Rect marginRectPercent(Rect rect, float percent){
+    public static Rect marginRectPercent(Rect rect, float percent){
         if(percent<=0||percent>1)return new Rect(0,0,0,0);
 
         Rect smallerRect=new Rect(rect);
         float ydelta = (smallerRect.height()*percent)/2;
         float xdelta = (smallerRect.width()*percent)/2;
-        smallerRect.inset((int)ydelta,(int)xdelta);
+        smallerRect.inset((int)xdelta,(int)ydelta);
 
 
         return smallerRect;
-    }*/
+    }
+
+    public static Rect squareRect(Rect rect){
+        Rect smallerRect = new Rect(rect);
+        if(rect.width()==rect.height())return smallerRect;
+        else if(rect.width()<rect.height()){
+            smallerRect.top=rect.centerY()-rect.width()/2;
+            smallerRect.bottom=rect.centerY()+rect.width()/2;
+        }else{
+            smallerRect.left=rect.centerX()+rect.height()/2;
+            smallerRect.right=rect.centerX()-rect.height()/2;
+        }
+        return smallerRect;
+    }
 
     public static Point getWindowSize(Context context){
 
@@ -326,16 +342,47 @@ public class ViewTools {
         return CCWLines;
     }
 
-    private static PathPlus linesToPath(Line[] lines) {
+    public static PathPlus linesToPath(Line[] lines) {
         PathPlus pathPlus = new PathPlus();
         for(int i=0;i<lines.length;i++)pathPlus.makeLine(lines[i]);
         return pathPlus;
     }
-    private static PathPlus linesToPath(Point[] points) {
+    public static PathPlus linesToPath(Point[] points) {
         PathPlus pathPlus = new PathPlus();
         for(int i=0;i<points.length-1;i++)pathPlus.makeLine(points[i],points[i+1]);
         return pathPlus;
     }
+
+
+    public static void setCenter(View view, PointF newCenter){
+        float height = view.getHeight();
+        float width = view.getWidth();
+        view.setX(newCenter.x-width/2);
+        view.setY(newCenter.y-height/2);
+    }
+
+    public static class PathPosition{
+        public PointF position;
+        public double rotation;
+        public float distance;
+
+        public PathPosition(PointF position, double rotation, float distance) {
+            this.position = position;
+            this.rotation = rotation;
+            this.distance = distance;
+        }
+    }
+
+    public static PathPosition getPathPosition(PathMeasure pathMeasure, float distance){
+        float pos[] = new float[2];
+        float tan[] = new float[2];
+        pathMeasure.getPosTan(distance,pos,tan);
+
+        double direction=ViewTools.getArcTan2Mapped(tan);
+        PointF crawlPointF = new PointF(pos[0],pos[1]);
+        return new PathPosition(crawlPointF,direction, distance);
+    }
+
 
 
 

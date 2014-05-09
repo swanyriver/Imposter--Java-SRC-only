@@ -11,6 +11,8 @@ import EyeBalls.EyeFocus;
 import EyeBalls.EyeSet;
 import SwansonLibrary.ViewTools;
 
+
+
 /**
  * Created by Brandon on 4/18/14.
  */
@@ -36,6 +38,8 @@ public class Face extends FrameLayout{
 
 
 
+
+
     public Face(Context context) {
         super(context);
 
@@ -53,7 +57,7 @@ public class Face extends FrameLayout{
             }
         });
 
-        setLayoutParams(new LayoutParams(mWidth, (int) (mWidth*1.2)));
+        setLayoutParams(new LayoutParams(mWidth, mWidth));
         setBackgroundColor(Color.BLUE);
 
         mEyeset=new EyeSet(this);

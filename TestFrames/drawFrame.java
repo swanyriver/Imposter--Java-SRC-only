@@ -39,7 +39,7 @@ public class drawFrame extends FrameLayout {
     private Context mContext;
 
     //private int LineNumber = 8;
-    private int refreshrate=600/600;
+    private int refreshrate=600/6;
 
     private DecimalFormat myFormat = new DecimalFormat("#");
 

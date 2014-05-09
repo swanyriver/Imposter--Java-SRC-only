@@ -46,6 +46,7 @@ public class ImposterMainActivity extends Activity {
 
 
 
+
         mFaces = new ArrayList<Face>();
 
         ///temporary  Debug
@@ -111,16 +112,17 @@ public class ImposterMainActivity extends Activity {
         ///////////////////////////////////
         ((Button)findViewById(R.id.toggleButton)).setEnabled(false);
         ((Button)findViewById(R.id.toggleButton)).setVisibility(View.INVISIBLE);
+        MasterLayout.removeAllViews();
         MasterLayout.setOnTouchListener(null);
 
-        MasterLayout.addView(new TestFrames.drawFrame(this));
+        //MasterLayout.addView(new TestFrames.drawFrame(this));
 
 
        // MasterLayout.addView(new TestFrames.PIFrame(this,(TextView) findViewById(R.id.readout)));
 
         //MasterLayout.addView(new DoublePiFrame(this));
 
-        //MasterLayout.addView(new PathFrame(this));
+        MasterLayout.addView(new PathFrame(this));
 
         //Path Visualzation stuff///////////
         ///////////////////////////////////
