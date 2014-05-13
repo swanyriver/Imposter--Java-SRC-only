@@ -49,17 +49,21 @@ public class PIFrame extends FrameLayout {
 
 
     private int mMargin=65;
-    private int mWidth;
-    private int mHeight;
+
     private float mMinLengthPercentage=.125F;
 
-    ///FIXED CONTROL VARIABLES
-    float MINIMUM_ANGLE = .25f;  //as a percent of 180  .25 = 45degrees = 90 degrees total
+
 
     ///DATA STRUCTURE
     //private Point mLinePoints[];
     private int mMaxLength;
+
+    public int getmMinLength() {
+        return mMinLength;
+    }
+
     private int mMinLength;
+
     /*private int Bounds.right;
     private int Bounds.bottom;
     private int Bounds.left;
@@ -108,16 +112,29 @@ public class PIFrame extends FrameLayout {
 
     private oneFingerMoveListener movePointTouch;
     private oneFingerMoveListener moveOrigonTouch;
+
+    public oneFingerMoveListener getMoveOrigonTouch() {
+        return moveOrigonTouch;
+    }
+
+    public oneFingerMoveListener getMovePointTouch() {
+        return movePointTouch;
+    }
+
     private oneFingerMoveListener TouchDownListener;
+
+    public void setTouchDownListener(oneFingerMoveListener touchDownListener){
+        TouchDownListener=touchDownListener;
+    }
+
 
 
     public PIFrame(Context context, TextView textView) {
 
         super(context);
 
-        Point windowsize = ViewTools.getWindowSize(context);
-        mWidth=windowsize.x;
-        mHeight=windowsize.y;
+
+
 
         mReadout=textView;
         mContext=context;
@@ -139,7 +156,7 @@ public class PIFrame extends FrameLayout {
 
 
 
-        mPointGenerator = new PointGenerator(mMaxLength,mMinLength,Bounds,WindyPath.MINIMUM_ANGLE_DEFAULT);
+        mPointGenerator = new PointGenerator(mMinLength,Bounds,WindyPath.MINIMUM_ANGLE_DEFAULT);
 
 
 

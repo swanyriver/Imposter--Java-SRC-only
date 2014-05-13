@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import SwansonLibrary.ViewTools;
 import TestFrames.DoublePiFrame;
+import TestFrames.PathFrame;
 
 
 public class ImposterMainActivity extends Activity {
@@ -41,14 +42,14 @@ public class ImposterMainActivity extends Activity {
         MasterLayout = (FrameLayout) findViewById(R.id.container);
         //MasterLayout.setClickable(true);
 
-        SetUp();
+        //SetUp();
 
 
         //Path Visualzation stuff///////////
         ///////////////////////////////////
 
 
-        //MasterLayout.addView(new TestFrames.drawFrame(this));
+        MasterLayout.addView(new TestFrames.drawFrame(this));
 
 
        // MasterLayout.addView(new TestFrames.PIFrame(this,(TextView) findViewById(R.id.readout)));

@@ -86,7 +86,7 @@ public class WindyPath extends Path{
 
         if(MinAngle>MINIMUM_ANGLE_DEFAULT)MinAngle=MINIMUM_ANGLE_DEFAULT;
 
-        mPointGenerator = new PointGenerator(MaxLength,MinLength,bounds,MinAngle);
+        mPointGenerator = new PointGenerator(MinLength,bounds,MinAngle);
 
 
 

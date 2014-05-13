@@ -39,7 +39,7 @@ public class drawFrame extends FrameLayout {
     private Context mContext;
 
     //private int LineNumber = 8;
-    private int refreshrate=600/6;
+    private int refreshrate=600*6;
 
     private DecimalFormat myFormat = new DecimalFormat("#");
 
@@ -91,11 +91,12 @@ public class drawFrame extends FrameLayout {
         Rect bounds=ViewTools.getWindowBounds(context);
 
 
-       bounds.inset(100,100);
+       bounds.inset(40,40);
 
 
-       // myWindyPath = new WindyPath(bounds,40);
-        myWindyPath = new testWindy(bounds,10);
+        myWindyPath = new WindyPath(bounds,15);
+        //myWindyPath = new testWindy(bounds,10);
+        //myWindyPath=new maxLengthWindy(bounds,15);
 
 
         makeLinesAndCurves();
@@ -133,14 +134,14 @@ public class drawFrame extends FrameLayout {
 
 
 
-        Point LinePoints[]= myWindyPath.getLinePoints();
+        /*Point LinePoints[]= myWindyPath.getLinePoints();
         int LineNumber = myWindyPath.getLineNumber();
 
         mLinePath.rewind();
         mLinePath.moveTo(LinePoints[0].x, LinePoints[0].y);
         for(int x=1;x<LineNumber+1;x++){
             mLinePath.lineTo(LinePoints[x].x, LinePoints[x].y);
-        }
+        }*/
 
 
         /*//TEMPORARY, REMOVE ANGLE LABELS

@@ -302,8 +302,8 @@ public class ViewTools {
     public static Point getRandomPoint(Rect Bounds){
         Random randomGen = new Random();
         Point thisPoint = new Point();
-        thisPoint.x = randomGen.nextInt(Bounds.width())+Bounds.left;
-        thisPoint.y = randomGen.nextInt(Bounds.height())+Bounds.top;
+        thisPoint.x = randomGen.nextInt(Bounds.width())+Bounds.left+1;
+        thisPoint.y = randomGen.nextInt(Bounds.height())+Bounds.top+1;
         return thisPoint;
 
     }

@@ -38,7 +38,7 @@ public class PointGenerator {
 
     ///DATA STRUCTURE
     //private Point mLinePoints[];
-    private int mMaxLength;
+    private int mDiagonal;
     private int mMinLength;
 
     private ViewTools.Line BorderLines[];
@@ -46,8 +46,8 @@ public class PointGenerator {
 
 
 
-    public PointGenerator(int mMaxLength, int mMinLength, Rect bounds, float minAngle) {
-        this.mMaxLength = mMaxLength;
+    public PointGenerator(int mMinLength, Rect bounds, float minAngle) {
+        this.mDiagonal = (int) ViewTools.getHypotenuse(bounds.width(),bounds.height());
         this.mMinLength = mMinLength;
         this.mMinAngle=minAngle;
 
@@ -248,7 +248,7 @@ public class PointGenerator {
 
         private double getAppropriateLenth(double approvedRad) {
             //get point off frame
-            Point offScreenPoint=ViewTools.vectorToPoint(approvedRad, mMaxLength, mCurrentPoint);
+            Point offScreenPoint=ViewTools.vectorToPoint(approvedRad, mDiagonal, mCurrentPoint);
             //find intersecton
 
             ViewTools.Line extendedLine = new ViewTools.Line(mCurrentPoint.x,mCurrentPoint.y,offScreenPoint.x,offScreenPoint.y);
@@ -268,12 +268,12 @@ public class PointGenerator {
                 }
             }
             if(numIntersections>1){
-               double greatestDistance=0;
-               for(int i=0;i<borderpoints.size();i++){
-                   if(ViewTools.getDistancetoNonSQRTD(mCurrentPoint,borderpoints.get(i))>greatestDistance){
-                       borderpoint=borderpoints.get(i);
-                   }
-               }
+                double greatestDistance=0;
+                for(int i=0;i<borderpoints.size();i++){
+                    if(ViewTools.getDistancetoNonSQRTD(mCurrentPoint,borderpoints.get(i))>greatestDistance){
+                        borderpoint=borderpoints.get(i);
+                    }
+                }
             }
             else if(numIntersections==0){
                 Log.d("PATH", "border intersection not detected");
@@ -347,7 +347,7 @@ public class PointGenerator {
 
             DecimalFormat twoDigit = new DecimalFormat("#.##");
             readout.setText(readout.getText()+"AVIL:" + twoDigit.format(mAvailableRadians)+
-            "EX:"+ twoDigit.format(mTotalExludedRadians) + "  " + twoDigit.format(mTotalExludedRadians+mAvailableRadians));
+                    "EX:"+ twoDigit.format(mTotalExludedRadians) + "  " + twoDigit.format(mTotalExludedRadians+mAvailableRadians));
 
             if(mBounds.bottom-mCurrentPoint.y<mMinLength){
                 Point drawpoint  = ViewTools.vectorToPoint(
