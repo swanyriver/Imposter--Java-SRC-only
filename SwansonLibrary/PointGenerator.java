@@ -40,6 +40,8 @@ public class PointGenerator {
     //private Point mLinePoints[];
     private int mDiagonal;
     private int mMinLength;
+    private static final int UNRESTRICTED=-1;
+    private int mMaxLength=UNRESTRICTED;
 
     private ViewTools.Line BorderLines[];
     private float mMinAngle;
@@ -60,6 +62,9 @@ public class PointGenerator {
 
     }
 
+    public void setmMaxLength(int maxLength){
+       if(maxLength>mMinLength) mMaxLength=maxLength;
+    }
 
 
     public RadianExclusionMap makeMap(Point Origin, Point CurrentPoint){
@@ -200,27 +205,6 @@ public class PointGenerator {
 
             Point generatedPoint = ViewTools.vectorToPoint(approvedRad, approvedLength, mCurrentPoint,mBounds);
 
-            /*Log.d("PATH","generated point=" + generatedPoint.x + "/" + generatedPoint.y  + " from:" +
-                    mCurrentPoint.x + "/" + mCurrentPoint.y);
-            Log.d("PATH", "VECTOR:"+approvedRad + "  LENGHT:" + approvedLength);*/
-
-            /*if(generatedPoint.x==mBounds.left)generatedPoint.x=generatedPoint.x+3;
-            if(generatedPoint.x==mBounds.right)generatedPoint.x=generatedPoint.x-3;
-            if(generatedPoint.y==mBounds.top)generatedPoint.y-=3;
-            if(generatedPoint.y==mBounds.bottom)generatedPoint.y+=3;
-
-            int whilecount=0;
-            while (!ViewTools.containsInner(generatedPoint, mBounds)){
-                approvedLength-=approvedLength*.005;
-                generatedPoint=ViewTools.vectorToPoint(approvedRad, approvedLength, mCurrentPoint);
-                whilecount++;
-                if(whilecount>100){
-                    Log.d("PATH","we are broken in the while");
-                    return ViewTools.getRandomPoint(mBounds);
-
-                }
-
-            }*/
 
 
             return generatedPoint;
@@ -292,7 +276,15 @@ public class PointGenerator {
             double pointLength;
 
             if(WallLength>=mMinLength){
-                pointLength=randomGen.nextFloat()*(WallLength-mMinLength)+mMinLength; //for rounding error
+                if(mMaxLength==UNRESTRICTED)pointLength=randomGen.nextFloat()*(WallLength-mMinLength)+mMinLength; //for rounding error
+                else{
+                    if(mMaxLength<WallLength) {
+                        pointLength=randomGen.nextFloat()*(mMaxLength-mMinLength)+mMinLength;
+                    }else {
+                        pointLength=randomGen.nextFloat()*(WallLength-mMinLength)+mMinLength;
+                    }
+
+                }
             }else{
 
                 pointLength=WallLength;

@@ -94,7 +94,7 @@ public class drawFrame extends FrameLayout {
        bounds.inset(40,40);
 
 
-        myWindyPath = new WindyPath(bounds,15);
+        myWindyPath = new WindyPath(bounds,20);
         //myWindyPath = new testWindy(bounds,10);
         //myWindyPath=new maxLengthWindy(bounds,15);
 
