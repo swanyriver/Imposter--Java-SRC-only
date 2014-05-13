@@ -55,6 +55,7 @@ public class PathFrame extends FrameLayout{
 
 
         Rect bounds = ViewTools.getWindowBounds(context);
+        bounds=ViewTools.marginRectPercent(bounds,.10f);
 
         //ViewTools.rectToLines(bounds,mLinePath);
         //bounds.inset(60,60);
@@ -63,7 +64,7 @@ public class PathFrame extends FrameLayout{
 
         //ViewTools.rectToLines(bounds,mCurvePath);
 
-        bounds=ViewTools.marginRectPercent(bounds,.10f);
+
         bounds=ViewTools.squareRect(bounds);
         //ViewTools.rectToLines(bounds,mLinePath);
         //bounds=ViewTools.marginRectPercent(bounds,.90f);

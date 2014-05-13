@@ -3,6 +3,7 @@ package com.brandonswanson.imposter;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.view.Display;
 import android.view.WindowManager;
 
@@ -23,29 +24,33 @@ public class BrainForImposter {
 
     private float FlyFocusDistanceNONSQRTD=0;
 
+    private static float FLY_FOCUS_DISTANCE_PERCENT_DEFAULT=.2f;
+
     private ArrayList<Face> mFaces;
 
-    public BrainForImposter(ArrayList<Face> faces){
+    private Rect mBounds;
+
+    public BrainForImposter(ArrayList<Face> faces, Rect bounds){
 
         mFaces=faces;
+        mBounds=bounds;
 
-        FlyFocusDistanceNONSQRTD=setFlyFocusDistace();
+        setFlyFocusDistace(FLY_FOCUS_DISTANCE_PERCENT_DEFAULT);
 
     }
 
     ////Initialization Methods////////
     ////////////////////////////////
-    private float setFlyFocusDistace() {
+    public void setFlyFocusDistace(float percent) {
 
-        Context context = mFaces.get(0).getContext();
-        Point size = ViewTools.getWindowSize(context);
+        if(percent<0||percent>1){
+            setFlyFocusDistace(FLY_FOCUS_DISTANCE_PERCENT_DEFAULT);
+            return;
+        }
 
-        float diagonalDistanceNONSQRTD = ViewTools.getDistancetoNonSQRTD(0,0,size.x,size.y);
+        double diagonalDistance = ViewTools.getHypotenuse(mBounds.width(),mBounds.height());
 
-        float diagonalDistance = (float) Math.sqrt(diagonalDistanceNONSQRTD);
-
-
-        return (diagonalDistance/4)*(diagonalDistance/4);
+        FlyFocusDistanceNONSQRTD= (float)Math.pow(diagonalDistance*percent,2);
 
     }
 

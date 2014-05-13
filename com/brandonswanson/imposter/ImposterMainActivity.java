@@ -3,20 +3,19 @@ package com.brandonswanson.imposter;
 import android.app.Activity;
 
 
+import android.graphics.Point;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 
 import java.util.ArrayList;
 
 
-import SwansonLibrary.oneFingerMoveListener;
+import SwansonLibrary.ViewTools;
 import TestFrames.DoublePiFrame;
-import TestFrames.PathFrame;
 
 
 public class ImposterMainActivity extends Activity {
@@ -40,80 +39,14 @@ public class ImposterMainActivity extends Activity {
         //if (savedInstanceState == null) {}
 
         MasterLayout = (FrameLayout) findViewById(R.id.container);
-        MasterLayout.setClickable(true);
+        //MasterLayout.setClickable(true);
 
-        MasterLayout.addView(new Fly(this,mBrain));
+        SetUp();
 
-
-
-
-        mFaces = new ArrayList<Face>();
-
-        ///temporary  Debug
-        Face newFace = new Face(getApplicationContext());
-        newFace.setX(200);
-        newFace.setY(200);
-        newFace.setVisibility(View.INVISIBLE);
-        MasterLayout.addView(newFace);
-        mFaces.add(newFace);
-        /////// Temporrary
-        //////////////////
-
-        mBrain = new BrainForImposter(mFaces);
-
-
-        WatchTouch = new oneFingerMoveListener() {
-            @Override
-            public void touchDown(float x, float y) {
-               // for(int i=0;i<mFaces.size();i++)mFaces.get(i).Eyes().focusHere((int) x, (int) y);
-                mBrain.lookHere((int)x,(int)y,BrainForImposter.FLY);
-
-            }
-            @Override
-            public void touchAt(float x, float y) {
-               // for(int i=0;i<mFaces.size();i++)mFaces.get(i).Eyes().focusHere((int)x,(int)y);
-                mBrain.lookHere((int)x,(int)y,BrainForImposter.FLY);
-
-            }
-            @Override
-            public void touchOver() {
-               // for(int i=0;i<mFaces.size();i++)mFaces.get(i).Eyes().request(EyeBall.PLEASE_LOOSE_FOCUS);
-                mBrain.StopLookingAll(BrainForImposter.FLY);
-            }
-        };
-
-        PlacerTouch = new oneFingerMoveListener() {
-            @Override
-            public void touchDown(float x, float y) {
-                Face newFace = new Face(getApplicationContext());
-                newFace.setX(x);
-                newFace.setY(y);
-                MasterLayout.addView(newFace);
-                mFaces.add(newFace);
-
-            }
-
-            @Override
-            public void touchAt(float x, float y) {
-
-
-            }
-
-            @Override
-            public void touchOver() {
-
-            }
-        };
-
-
-        MasterLayout.setOnTouchListener(PlacerTouch);
 
         //Path Visualzation stuff///////////
         ///////////////////////////////////
-        ((Button)findViewById(R.id.toggleButton)).setEnabled(false);
-        ((Button)findViewById(R.id.toggleButton)).setVisibility(View.INVISIBLE);
-        MasterLayout.removeAllViews();
-        MasterLayout.setOnTouchListener(null);
+
 
         //MasterLayout.addView(new TestFrames.drawFrame(this));
 
@@ -122,22 +55,42 @@ public class ImposterMainActivity extends Activity {
 
         //MasterLayout.addView(new DoublePiFrame(this));
 
-        MasterLayout.addView(new PathFrame(this));
+        //MasterLayout.addView(new PathFrame(this));
 
         //Path Visualzation stuff///////////
-        ///////////////////////////////////
+        ///////////////////////////////////*/
     }
 
-    public void toggleButton(View view){
-        if(mPlacing){
-            mPlacing=false;
-            MasterLayout.setOnTouchListener(WatchTouch);
-            ((Button) view).setText("Place More");
-        }else {
-            mPlacing=true;
-            MasterLayout.setOnTouchListener(PlacerTouch);
-            ((Button) view).setText("Start Watching");
+    private void SetUp() {
+        mFaces = new ArrayList<Face>();
+
+        Point size= ViewTools.getWindowSize(this);
+
+        int width = size.x/4;
+        int faceSize = (int) (width*.9);
+        int margin = (int) (width*.1);
+        int vstart = (size.y-size.x)/2;
+
+
+        Log.d("PATH", "adding faces start");
+        for(int x=margin/2;x<=size.x-faceSize-margin/2;x+=faceSize+margin){
+            for(int y=vstart;y<=width*5;y+=faceSize+margin){
+                Face newFace = new Face(this,faceSize,faceSize);
+                newFace.setX(x);
+                newFace.setY(y);
+                MasterLayout.addView(newFace);
+                mFaces.add(newFace);
+            }
         }
+        Log.d("PATH", "adding faces end");
+
+        mBrain = new BrainForImposter(mFaces,ViewTools.getWindowBounds(this) );
+        mBrain.setFlyFocusDistace(.15f);
+
+        Log.d("PATH", "adding fly");
+        MasterLayout.addView(new Fly(this,mBrain));
+        Log.d("PATH", "adding fly finished");
     }
+
 
 }

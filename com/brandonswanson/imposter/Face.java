@@ -1,9 +1,17 @@
 package com.brandonswanson.imposter;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import EyeBalls.EyeBall;
 import EyeBalls.EyeDrawables;
@@ -20,11 +28,14 @@ public class Face extends FrameLayout{
 
     private Face MySelf = this;
 
-    static final int mWidth = 120;
-    private int mEyeWidth= (int) (mWidth/2);
+
+
     private EyeSet mEyeset;
 
     private int[] mCenterInWindow = new int[]{0,0};
+    private int mWidth;
+    private int mHeigth;
+
     public int getCenterX(){return mCenterInWindow[0];}
     public int getCenterY(){return mCenterInWindow[1];}
 
@@ -40,13 +51,19 @@ public class Face extends FrameLayout{
 
 
 
-    public Face(Context context) {
+    public Face(Context context, int width, int height) {
         super(context);
+
+        mWidth=width;
+        mHeigth=height;
+
+        setBackgroundResource(R.drawable.face);
+
 
         post(new Runnable() {
             @Override
             public void run() {
-                ViewTools.findCenterInWindow(MySelf,mCenterInWindow);
+                ViewTools.findCenterInWindow(MySelf, mCenterInWindow);
             }
         });
 
@@ -57,15 +74,28 @@ public class Face extends FrameLayout{
             }
         });
 
+        setWillNotDraw(false);
+
         setLayoutParams(new LayoutParams(mWidth, mWidth));
-        setBackgroundColor(Color.BLUE);
+
 
         mEyeset=new EyeSet(this);
-        mEyeset.addEyeball(mEyeWidth,mEyeWidth,mWidth/4,mWidth/2,EyeDrawables.getEyeDraw(2,getContext()));
-        mEyeset.addEyeball(mEyeWidth,mEyeWidth,mWidth/4*3,mWidth/2,EyeDrawables.getEyeDraw(2,getContext()));
+        mEyeset.addEyeball((int)(mWidth*.45),(int)(mWidth*.45),mWidth/3,(mWidth/3)*1.25f,EyeDrawables.getEyeDraw(2,getContext()));
+        mEyeset.addEyeball((int)(mWidth*.45),(int)(mWidth*.45),mWidth/3*2,(mWidth/3)*1.25f,EyeDrawables.getEyeDraw(2,getContext()));
 
     }
 
+   /* @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        RectF bounds = new RectF(0,0,mWidth, mHeigth);
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.CYAN);
+        canvas.drawOval(bounds,paint);
+        Log.d("FACE", "drawing the face");
+        setWillNotDraw(true);
+    }*/
 
     public EyeFocus Eyes(){
         return mEyeset;
