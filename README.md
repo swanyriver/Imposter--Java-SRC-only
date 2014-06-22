@@ -21,5 +21,6 @@ available to prevent from double backwards (created too sharp of an angle) or go
 closer than the desired minimum lenght.
 
 
-A couple of the methods in the Eyeball class were taken from contributers on Stack OverFlow, I have taken an effort to 
-deliniate this in the Code.  Other than that this is all original code, writen over the course of 6 months or so, off an on.
+A piece of code for finding the intersection of 2 lines in the EyeSet class was taken from a contributer on Stack OverFlow
+I have taken an effort to deliniate this in the Code.  Other than that this is all original code, writen over the course of
+6 months or so, off an on.
