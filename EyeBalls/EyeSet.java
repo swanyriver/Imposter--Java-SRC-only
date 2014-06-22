@@ -4,9 +4,6 @@ package EyeBalls;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Point;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -45,6 +42,12 @@ public class EyeSet implements EyeFocus{
         mEyeFrame=eyeFrame;
     }
 
+    public void setAdjustDuration(boolean snapy){
+        for(int i=0;i<mNumEyeballs;i++){
+            if(snapy)mEyeballs.get(i).setRUBBERINESS(EyeBall.SNAPPY_RUBBERINESS);
+            else mEyeballs.get(i).setRUBBERINESS(EyeBall.DEFAULT_RUBBERINESS);
+        }
+    }
 
     private void initEyeSet() {
 

@@ -46,9 +46,20 @@ public class EyeBall extends ImageView implements EyeBallINT{
 
     private Paint mPaint = new Paint();
 
-    protected long RUBBERINESS = 600;
+    public static int SNAPPY_RUBBERINESS =100;
+    public static int DEFAULT_RUBBERINESS=600;
+    protected long RUBBERINESS = DEFAULT_RUBBERINESS;
     protected long DELAY = 60;
-    protected long EYEADJUSTDURATION = 200;
+
+    public void setRUBBERINESS(long RUBBERINESS) {
+        this.RUBBERINESS = RUBBERINESS;
+    }
+
+
+    public static int DEFAULT_ADJUST_DURATION=200;
+
+    protected long EYEADJUSTDURATION = DEFAULT_ADJUST_DURATION;
+
     protected long EYEADJUSTDELAY = 0;
     private DecelerateInterpolator mdecellINTER = new DecelerateInterpolator();
     private OvershootInterpolator mOvershootINTER = new OvershootInterpolator();
@@ -278,6 +289,7 @@ public class EyeBall extends ImageView implements EyeBallINT{
     }
 
     private void getAttention(long duration, long delay){
+
 
         int pupilCoords[] = getPupilCoords();
 

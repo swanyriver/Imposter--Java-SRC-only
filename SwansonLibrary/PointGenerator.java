@@ -42,9 +42,10 @@ public class PointGenerator {
     private int mMinLength;
     private static final int UNRESTRICTED=-1;
     private int mMaxLength=UNRESTRICTED;
+    private float mMaxAngle=UNRESTRICTED;  //as a percent of 180 representing the restricted radian in the same direction
 
     private ViewTools.Line BorderLines[];
-    private float mMinAngle;
+    private float mMinAngle;  //as a percent of 180, .25=45degree = 90degree total restriction
 
 
 
@@ -66,6 +67,7 @@ public class PointGenerator {
        if(maxLength>mMinLength) mMaxLength=maxLength;
     }
 
+    public void setmMaxAngle(float maxAngle){mMaxAngle=maxAngle;}
 
     public RadianExclusionMap makeMap(Point Origin, Point CurrentPoint){
         return new RadianExclusionMap(Origin,CurrentPoint);
@@ -87,12 +89,23 @@ public class PointGenerator {
             beginingRad = (lastRadian + ViewTools.FULLCIRCLE - (mMinAngle*Math.PI) + Math.PI)%ViewTools.FULLCIRCLE;
             endRad = (lastRadian + (mMinAngle*Math.PI) + Math.PI)%ViewTools.FULLCIRCLE;
 
-
             if(beginingRad>endRad){
                 mExcludedRanges.add(new RadianRange(beginingRad,ViewTools.FULLCIRCLE));
                 beginingRad=0;
             }
             mExcludedRanges.add(new RadianRange(beginingRad,endRad));
+
+            //opposite angle exclusion
+            if(mMaxAngle!=UNRESTRICTED){
+                beginingRad = (lastRadian - Math.PI*mMaxAngle)%ViewTools.FULLCIRCLE;
+                endRad = (lastRadian + Math.PI*mMaxAngle)%ViewTools.FULLCIRCLE;
+
+                if(beginingRad>endRad){
+                    mExcludedRanges.add(new RadianRange(beginingRad,ViewTools.FULLCIRCLE));
+                    beginingRad=0;
+                }
+                mExcludedRanges.add(new RadianRange(beginingRad,endRad));
+            }
 
 
             //detect proximity to walls, exclude them

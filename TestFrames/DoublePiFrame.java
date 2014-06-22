@@ -27,10 +27,6 @@ public class DoublePiFrame extends FrameLayout {
     private PIFrame endofPath;
     private oneFingerMoveListener mDoubleTouchDownListener;
 
-    private OnTouchListener startpointmover;
-    private OnTouchListener startOrigonMover;
-    private OnTouchListener endpointmover;
-    private OnTouchListener endOrigonMover;
     private PointGenerator mPointGenerator;
 
 
@@ -75,24 +71,24 @@ public class DoublePiFrame extends FrameLayout {
                 if(!ViewTools.lengthLessThanDistance(new Point((int)x, (int)y),startofPath.getCurrentPoint(),startofPath.getmMinLength())){
 
 
-                    //setOnTouchListener(startofPath.getMovePointTouch());
-                    setOnTouchListener(startpointmover);
+                    setOnTouchListener(startofPath.getMovePointTouch());
+
 
                 }
                 else if(!ViewTools.lengthLessThanDistance(new Point((int)x, (int)y),startofPath.getOrigin(),startofPath.getmMinLength()/4)){
 
 
-                    //setOnTouchListener(startofPath.getMoveOrigonTouch());
-                    setOnTouchListener(startOrigonMover);
+                    setOnTouchListener(startofPath.getMoveOrigonTouch());
+
                 }else if(!ViewTools.lengthLessThanDistance(new Point((int)x, (int)y),endofPath.getCurrentPoint(),endofPath.getmMinLength())){
 
 
-                    setOnTouchListener(endpointmover);
+                    setOnTouchListener(endofPath.getMovePointTouch());
                 }
                 else if(!ViewTools.lengthLessThanDistance(new Point((int)x, (int)y),endofPath.getOrigin(),endofPath.getmMinLength()/4)){
 
 
-                    setOnTouchListener(endOrigonMover);
+                    setOnTouchListener(endofPath.getMoveOrigonTouch());
                 }
 
             }
@@ -118,10 +114,10 @@ public class DoublePiFrame extends FrameLayout {
         startofPath.removeAllViews();
         endofPath.removeAllViews();
 
-        startOrigonMover= new OrigonMover(startofPath,this,mDoubleTouchDownListener);
-        startpointmover= new PointMover(startofPath,this,mDoubleTouchDownListener);
-        endOrigonMover= new OrigonMover(endofPath,this,mDoubleTouchDownListener);
-        endpointmover= new PointMover(endofPath,this,mDoubleTouchDownListener);
+        endofPath.setmFrame(this);
+        startofPath.setmFrame(this);
+
+
 
         setOnTouchListener(mDoubleTouchDownListener);
 
@@ -143,89 +139,4 @@ public class DoublePiFrame extends FrameLayout {
     }
 }
 
-class OrigonMover extends oneFingerMoveListener{
-    PIFrame mFrame;
-    DoublePiFrame mHostframe;
-    oneFingerMoveListener mTouchdownlistener;
 
-    public OrigonMover(PIFrame frame, DoublePiFrame hostframe, oneFingerMoveListener touchdownlistener) {
-        mFrame=frame;
-        mHostframe=hostframe;
-        mTouchdownlistener = touchdownlistener;
-    }
-
-    @Override
-    public void touchDown(float x, float y) {
-
-    }
-
-    @Override
-    public void touchAt(float x, float y) {
-
-        boolean inside = ViewTools.containsInner(x, y, mFrame.getBounds());
-        boolean lengthAllowed = ViewTools.lengthLessThanDistance(mFrame.getCurrentPoint(),new Point((int)x,(int)y), mFrame.getmMinLength());
-
-        if(inside && lengthAllowed){
-            mFrame.setOrigin(new Point((int) x, (int) y));
-        }else {
-
-            touchOver();
-        }
-
-    }
-
-    @Override
-    public void touchOver() {
-
-        mHostframe.setOnTouchListener(mTouchdownlistener);
-    }
-}
-
-class PointMover extends oneFingerMoveListener{
-
-        private OFFSET Offset;
-
-    PIFrame mFrame;
-    DoublePiFrame mHostframe;
-    oneFingerMoveListener mTouchdownlistener;
-
-    public PointMover(PIFrame frame, DoublePiFrame hostframe, oneFingerMoveListener touchdownlistener) {
-        mFrame=frame;
-        mHostframe=hostframe;
-        mTouchdownlistener = touchdownlistener;
-    }
-        @Override
-        public void touchDown(float x, float y) {
-            //shouldnt be reached
-
-        }
-
-        @Override
-        public void touchAt(float x, float y) {
-
-            // Log.d("PATH", "point move touch");
-
-            if(Offset==null){
-                Point currentPoint=mFrame.getCurrentPoint();
-                Offset=new OFFSET(currentPoint.x,currentPoint.y,(int)x,(int)y);
-            }
-            Point touchPoint = Offset.get((int)x,(int)y);
-
-            boolean inside = ViewTools.containsInner(touchPoint.x, touchPoint.y, mFrame.getBounds());
-            boolean lengthAllowed = ViewTools.lengthLessThanDistance(mFrame.getOrigin(),touchPoint, mFrame.getmMinLength());
-
-            if(inside && lengthAllowed){
-                mFrame.setCurrentPoint(touchPoint);
-            }else {
-                touchOver();
-            }
-
-        }
-
-        @Override
-        public void touchOver() {
-            Offset=null;
-            mHostframe.setOnTouchListener(mTouchdownlistener);
-
-        }
-}

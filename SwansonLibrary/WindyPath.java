@@ -88,10 +88,16 @@ public class WindyPath extends Path{
 
         mPointGenerator = new PointGenerator(MinLength,bounds,MinAngle);
 
+        //put PointGenerator modifiers here
+
+        modifyPointGenerator(mPointGenerator);
 
 
 
 
+    }
+
+    private void modifyPointGenerator(PointGenerator pointGenerator){
     }
 
     public void generate(){
@@ -101,14 +107,50 @@ public class WindyPath extends Path{
 
         mLinePoints[0]=ViewTools.getRandomPoint(mBounds);
         mLinePoints[1]=mPointGenerator.makeMap(mLinePoints[0],mLinePoints[0]).getPoint();
+        finishGenerate();
+
+    }
+
+    public void generate(Point startPoint, int LineNumber){
+        rewind();
+
+        mLineNumber=LineNumber;
+
+        mLinePoints = new Point[mLineNumber+1];
+
+        mLinePoints[0]=startPoint;
+        mLinePoints[1]=mPointGenerator.makeMap(mLinePoints[0],mLinePoints[0]).getPoint();
+        finishGenerate();
+    }
+
+    public void generate(ViewTools.Line startLine, int LineNumber){
+        rewind();
+
+        mLineNumber=LineNumber;
+        mLinePoints = new Point[mLineNumber+1];
+
+        mLinePoints[0]=startLine.start;
+        mLinePoints[1]=startLine.end;
+        finishGenerate();
+    }
+
+    public void generate(boolean Continue){
+        if(Continue&&mLinePoints!=null){
+            generate(new ViewTools.Line(mLinePoints[mLinePoints.length-2],mLinePoints[mLinePoints.length-1]), mLineNumber);
+        }else generate();
+    }
+
+    public void generate(boolean Continue, int LineNumber){
+        mLineNumber=LineNumber;
+        generate(Continue);
+    }
+
+
+    private void finishGenerate(){
         for(int x=2;x<mLineNumber+1;x++){
-
             mLinePoints[x]=mPointGenerator.makeMap(mLinePoints[x-2],mLinePoints[x-1]).getPoint();
-
         }
-
         makeCurves();
-
     }
 
     protected void makeCurves() {

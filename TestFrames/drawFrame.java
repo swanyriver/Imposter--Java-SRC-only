@@ -17,7 +17,11 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.brandonswanson.imposter.BrainForImposter;
+import com.brandonswanson.imposter.Fly;
+
 import java.text.DecimalFormat;
+import java.util.Random;
 
 import SwansonLibrary.ViewTools;
 import SwansonLibrary.WindyPath;
@@ -34,12 +38,14 @@ public class drawFrame extends FrameLayout {
     private Path mLinePath = new Path();
     private Paint mLinePaint = new Paint();
 
+    private Random mRandom = new Random();
+
     private FrameLayout Myself;
 
     private Context mContext;
 
     //private int LineNumber = 8;
-    private int refreshrate=600*6;
+    private int refreshrate=600*12;
 
     private DecimalFormat myFormat = new DecimalFormat("#");
 
@@ -94,13 +100,16 @@ public class drawFrame extends FrameLayout {
        bounds.inset(40,40);
 
 
-        myWindyPath = new WindyPath(bounds,20);
+        myWindyPath = new WindyPath(bounds,7);
         //myWindyPath = new testWindy(bounds,10);
         //myWindyPath=new maxLengthWindy(bounds,15);
 
 
-        makeLinesAndCurves();
+
+        myWindyPath.generate();
         Myself.invalidate();
+
+
 
         timer = new ValueAnimator().ofFloat(0,1);
         timer.setRepeatCount(ValueAnimator.INFINITE);
@@ -128,7 +137,7 @@ public class drawFrame extends FrameLayout {
 
     private void makeLinesAndCurves(){
 
-        myWindyPath.generate();
+        myWindyPath.generate(true,mRandom.nextInt(15)+1);
 
 
 

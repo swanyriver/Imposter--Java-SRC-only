@@ -47,10 +47,6 @@ public class Face extends FrameLayout{
     }
 
 
-
-
-
-
     public Face(Context context, int width, int height) {
         super(context);
 
@@ -83,21 +79,14 @@ public class Face extends FrameLayout{
         mEyeset.addEyeball((int)(mWidth*.45),(int)(mWidth*.45),mWidth/3,(mWidth/3)*1.25f,EyeDrawables.getEyeDraw(2,getContext()));
         mEyeset.addEyeball((int)(mWidth*.45),(int)(mWidth*.45),mWidth/3*2,(mWidth/3)*1.25f,EyeDrawables.getEyeDraw(2,getContext()));
 
+
     }
 
-   /* @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        RectF bounds = new RectF(0,0,mWidth, mHeigth);
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.CYAN);
-        canvas.drawOval(bounds,paint);
-        Log.d("FACE", "drawing the face");
-        setWillNotDraw(true);
-    }*/
 
     public EyeFocus Eyes(){
         return mEyeset;
+    }
+    public void SetEyeAdjustDuration(boolean snappy){
+        mEyeset.setAdjustDuration(snappy);
     }
 }

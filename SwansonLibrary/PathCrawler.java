@@ -7,6 +7,10 @@ import android.view.View;
 
 public abstract class PathCrawler extends ValueAnimator{
 
+    public float getmCrawlPathLength() {
+        return mCrawlPathLength;
+    }
+
     protected float mCrawlPathLength;
     protected Path mCrawlPath;
     protected PathMeasure mCrawlPathMeasure;
@@ -32,11 +36,8 @@ public abstract class PathCrawler extends ValueAnimator{
 
 
 
-
-
     public PathCrawler(Path path) {
 
-        new ValueAnimator();
 
         mCrawlPath=new Path(path);
         mCrawlPathMeasure=new PathMeasure(path,false);
@@ -46,22 +47,12 @@ public abstract class PathCrawler extends ValueAnimator{
         super.setFloatValues(0, mCrawlPathMeasure.getLength());
 
 
-
        addUpdateListener(new AnimatorUpdateListener() {
            @Override
            public void onAnimationUpdate(ValueAnimator animation) {
 
                float pathPostion = (Float)getAnimatedValue();
 
-
-               /*float pos[] = new float[2];
-               float tan[] = new float[2];
-               mCrawlPathMeasure.getPosTan(pathPostion,pos,tan);
-
-               double direction=ViewTools.getArcTan2Mapped(tan);
-               PointF crawlPointF = new PointF(pos[0],pos[1]);*/
-
-               //if(getRepeatMode()==REVERSE&&getRepeatCount()%2==0) direction=(direction+Math.PI)%ViewTools.FULLCIRCLE;
 
                ViewTools.PathPosition pathPosition = ViewTools.getPathPosition(mCrawlPathMeasure,pathPostion);
 
@@ -80,7 +71,19 @@ public abstract class PathCrawler extends ValueAnimator{
                onCrawl(pathPosition);
            }
        });
+
     }
+
+    public void setpath(Path path){
+
+        mCrawlPath=new Path(path);
+        mCrawlPathMeasure=new PathMeasure(path,false);
+        mCrawlPathLength = mCrawlPathMeasure.getLength();
+
+        super.setFloatValues(0, mCrawlPathMeasure.getLength());
+
+    }
+
 
     public void setView(View view){
         mCrawlingView=view;

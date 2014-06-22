@@ -23,6 +23,8 @@ public interface EyeFocus{
     int getIndexofClosest(int x, int y);
     int getmNumEyesets();
     Point getCenterinWindow(int index);
+
+    //public void setAdjustDuration(boolean snapy);
     // getCenterInWindow();   ////////add implementation to SET, Group, Brain, BrainAdapter
 }
 

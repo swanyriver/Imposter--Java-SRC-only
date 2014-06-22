@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -383,7 +384,16 @@ public class ViewTools {
         return new PathPosition(crawlPointF,direction, distance);
     }
 
+    public static void makeToast(Context context,String toastString){
+        makeToast(context,toastString,false);
+    }
 
+
+    public static void makeToast(Context context,String toastString, boolean Long){
+        int toastLength=Toast.LENGTH_SHORT;
+        if(Long)toastLength=Toast.LENGTH_LONG;
+        Toast.makeText(context, toastString, toastLength).show();
+    }
 
 
 }

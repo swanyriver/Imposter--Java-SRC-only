@@ -26,19 +26,35 @@ public class Fly extends ImageView {
     private Path mWindyPath;
     private PathCrawler mPathCrawler;
 
-    public Fly(Context context, BrainForImposter brain) {
-        super(context);
+    private long mSpeed = 900*7; //time to cross diagonal
 
+
+    public Fly(Context context,BrainForImposter brain, Rect bounds, float Speed){
+        super(context);
+        Speed = (float) Math.pow(Speed,-1);
+        mSpeed= (long) (mSpeed*Speed);
+        setup(brain,bounds);
+    }
+
+
+
+    public Fly(Context context,BrainForImposter brain, Rect bounds) {
+        super(context);
+        setup(brain,bounds);
+
+    }
+
+    private void setup(BrainForImposter brain, Rect bounds) {
         mBrain = brain;
 
         setLayoutParams(new FrameLayout.LayoutParams(100,100));
         setImageResource(R.drawable.fly);
 
-        Rect bounds = ViewTools.getWindowBounds(context);
-        bounds=ViewTools.marginRectPercent(bounds,.10f);
-        bounds=ViewTools.squareRect(bounds);
 
-        mWindyPath= new WindyPath(bounds,100);
+        double diagonal=ViewTools.getHypotenuse(bounds.width(),bounds.height());
+
+
+        mWindyPath= new WindyPath(bounds,250);
 
         mPathCrawler = new PathCrawler(mWindyPath) {
             @Override
@@ -49,11 +65,11 @@ public class Fly extends ImageView {
         };
 
         mPathCrawler.setView(this);
-        mPathCrawler.setDuration(100 * 1500);
+        mPathCrawler.setDuration((long) ((mPathCrawler.getmCrawlPathLength()/diagonal)*mSpeed));
         mPathCrawler.setInterpolator(new LinearInterpolator());
         mPathCrawler.setRepeatCount(ValueAnimator.INFINITE);
         mPathCrawler.setRepeatMode(ValueAnimator.REVERSE);
         mPathCrawler.start();
-
     }
+
 }

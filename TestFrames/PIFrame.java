@@ -127,6 +127,8 @@ public class PIFrame extends FrameLayout {
         TouchDownListener=touchDownListener;
     }
 
+    private FrameLayout mFrame;
+    public void setmFrame(FrameLayout frame){mFrame=frame;}
 
 
     public PIFrame(Context context, TextView textView) {
@@ -134,6 +136,7 @@ public class PIFrame extends FrameLayout {
         super(context);
 
 
+        mFrame=this;
 
 
         mReadout=textView;
@@ -157,6 +160,7 @@ public class PIFrame extends FrameLayout {
 
 
         mPointGenerator = new PointGenerator(mMinLength,Bounds,WindyPath.MINIMUM_ANGLE_DEFAULT);
+        mPointGenerator.setmMaxAngle(WindyPath.MINIMUM_ANGLE_DEFAULT);
 
 
 
@@ -326,7 +330,7 @@ public class PIFrame extends FrameLayout {
             public void touchOver() {
 
                 Offset=null;
-                Myself.setOnTouchListener(TouchDownListener);
+                mFrame.setOnTouchListener(TouchDownListener);
 
             }
         };
@@ -363,7 +367,7 @@ public class PIFrame extends FrameLayout {
             @Override
             public void touchOver() {
                 Offset=null;
-                setOnTouchListener(TouchDownListener);
+                mFrame.setOnTouchListener(TouchDownListener);
 
             }
 

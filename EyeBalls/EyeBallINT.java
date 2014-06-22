@@ -20,4 +20,5 @@ public interface EyeBallINT {
 
     public int getHeight();
     public int getWidth();
+    public void setRUBBERINESS(long RUBBERINESS);
 }
