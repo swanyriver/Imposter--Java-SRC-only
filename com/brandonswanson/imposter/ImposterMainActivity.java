@@ -27,13 +27,10 @@ public class ImposterMainActivity extends Activity {
     private FrameLayout MasterLayout;
 
 
-    private View.OnTouchListener PlacerTouch;
-    private View.OnTouchListener WatchTouch;
-
     private ArrayList<Face> mFaces;
     private BrainForImposter mBrain;
 
-    private boolean mPlacing = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +42,11 @@ public class ImposterMainActivity extends Activity {
         MasterLayout = (FrameLayout) findViewById(R.id.container);
         MasterLayout.setClickable(true);
 
+
+
         SetUp();
+
+
 
 
         //Path Visualzation stuff///////////
