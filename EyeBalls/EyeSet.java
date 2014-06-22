@@ -294,7 +294,7 @@ public class EyeSet implements EyeFocus{
 
         Intersection thisIntersection = new Intersection();
 
-
+        /////CODE FROM STACK OVERFLOW ///////
         float s1_x, s1_y, s2_x, s2_y;
         s1_x = lineOne.end.x - lineOne.start.x;     s1_y = lineOne.end.y - lineOne.start.y;
         s2_x = lineTwo.end.x - lineTwo.start.x;     s2_y = lineTwo.end.y - lineTwo.start.y;
@@ -302,6 +302,7 @@ public class EyeSet implements EyeFocus{
         float s, t;
         s = (-s1_y * (lineOne.start.x - lineTwo.start.x) + s1_x * (lineOne.start.y - lineTwo.start.y)) / (-s2_x * s1_y + s1_x * s2_y);
         t = ( s2_x * (lineOne.start.y - lineTwo.start.y) - s2_y * (lineOne.start.x - lineTwo.start.x)) / (-s2_x * s1_y + s1_x * s2_y);
+        /////CODE FROM STACK OVERFLOW ///////
 
         if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
         {
